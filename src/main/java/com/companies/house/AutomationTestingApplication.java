@@ -1,4 +1,4 @@
-package com.companies.house.automation;
+package com.companies.house;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
