@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BasicEndToEndSteps {
 
@@ -36,10 +37,19 @@ public class BasicEndToEndSteps {
     }
 
     @And("^I want to stay for (.*) nights$")
-    public void iSetTheCheckOutDate(int nights){
-        LocalDate checkOutDate = LocalDate.now().plusDays(nights);
+    public void iSetTheCheckOutDate(int nights) {
+        LocalDate checkinDate = context.get("checkInDate", LocalDate.class);
+        LocalDate checkOutDate = checkinDate.plusDays(nights);
         context.put("checkOutDate", checkOutDate);
         homepage.setCheckOutDate(Formatters.DD_MM_YYYY.format(checkOutDate));
+    }
+
+    @And("I set a random check in date")
+    public void setRandomCheckInDate() {
+        int days = ThreadLocalRandom.current().nextInt(1, 365);
+        LocalDate checkInDate = LocalDate.now().plusDays(days);
+        context.put("checkInDate", checkInDate);
+        homepage.setCheckInDate(Formatters.DD_MM_YYYY.format(checkInDate));
     }
 
     @When("^I click the check availability button and select the (.*) room option$")
@@ -49,7 +59,7 @@ public class BasicEndToEndSteps {
         context.put("roomType", roomType);
     }
 
-    @And ("I can reserve my room and populate the additional details")
+    @And("I can reserve my room and populate the additional details")
     public void iCanReserveMyRoomAndPopulateAdditionalDetails() {
         String roomType = context.get("roomType", String.class);
         roomPage.correctPageIsDisplayed(roomType);
@@ -58,7 +68,7 @@ public class BasicEndToEndSteps {
         roomPage.clickSecondReserveNowButton();
     }
 
-    @And ("the confirmation details are displayed")
+    @And("the confirmation details are displayed")
     public void theConfirmationDetailsAreDisplayed() {
         roomPage.confirmationDisplayed();
     }

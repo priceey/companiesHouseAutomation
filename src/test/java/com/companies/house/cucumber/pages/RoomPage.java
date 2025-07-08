@@ -60,7 +60,7 @@ public class RoomPage extends AbstractBasePage {
     @FindBy(how = How.CSS, using = "#root-container div.container.my-5 div.col-lg-4  p:nth-child(2)")
     private WebElement bookingConfirmedInfoTxt;
 
-    @FindBy(how = How.CSS, using = "#root-container div.container.my-5 div.col-lg-4 strong)")
+    @FindBy(how = How.CSS, using = "#root-container div.container.my-5 div.col-lg-4 strong")
     private WebElement datesBookedTxt;
 
     public void correctPageIsDisplayed(String roomType) {
@@ -92,10 +92,10 @@ public class RoomPage extends AbstractBasePage {
         assertEquals("Your booking has been confirmed for the following dates:", readText(bookingConfirmedInfoTxt), "Booking confirmed information missing.");
 
         // create the booking dates
-        LocalDate checkinDate = context.pop("CheckinDate", LocalDate.class);
-        LocalDate checkoutDate = context.pop("CheckOutDate", LocalDate.class);
+        LocalDate checkinDate = context.pop("checkInDate", LocalDate.class);
+        LocalDate checkoutDate = context.pop("checkOutDate", LocalDate.class);
 
-        String expectedText = String.join(" ", Formatters.YYYY_MM_DD.format(checkinDate), "-", Formatters.YYYY_MM_DD.format(checkoutDate));
+        String expectedText = String.join(" ", Formatters.YYYY_MM_DD_DASHED.format(checkinDate), "-", Formatters.YYYY_MM_DD_DASHED.format(checkoutDate));
         assertEquals(expectedText, readText(datesBookedTxt), "Booking dates aren't displayed");
     }
 
