@@ -37,11 +37,6 @@ public class AccessibilityService {
                 String scenarioReportDirectory = Paths.get(baseReportDirectory,
                         scenarioName.replace(" ", "_"), pageName.replace(" ", "_")).toString();
 
-//                Path path = Paths.get(scenarioReportDirectory);
-//
-//                if (!path.toFile().exists()) {
-//                    path.toFile().mkdirs();
-//                }
                 Files.createDirectories(Paths.get(scenarioReportDirectory));
                 Path reportPath = Paths.get(scenarioReportDirectory, "axe-results.json");
                 Files.write(reportPath, Collections.singleton(json));
@@ -50,6 +45,4 @@ public class AccessibilityService {
             log.error("Failed to generate accessibility report for scenario: {}", scenarioName);
         }
     }
-
-
 }
