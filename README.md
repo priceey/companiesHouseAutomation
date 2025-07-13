@@ -38,3 +38,10 @@ Also available is a accessibility report. If the scenario  "Basic end to end tes
 At present this is only availalbe in json format, but it can be converted to a more readable html report. I haven't coded that section, but i will add an example of the report to the repo.
 
 These are found in the folder /target/accessibility-reports-json/ and each page tested.
+
+########### Issues ###########
+
+I have noticed and issue with the selection of rooms after checking the availability. My code counts on there being a specific type based on the feature file. This can fail if the rooms have been flooded with extra rooms.
+
+These can be deleted to create a cleaner envrionment and the code will create its own room for the test before removing it at the end.
+
