@@ -1,6 +1,9 @@
 package com.companies.house.context;
 
+import io.cucumber.java.Scenario;
 import io.cucumber.spring.ScenarioScope;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -11,6 +14,9 @@ import java.util.Map;
 public class ScenarioContext {
 
     private final Map<String, Object> context = new HashMap<>();
+    @Setter
+    @Getter
+    private Scenario scenario;
 
     public void put(String key, Object value) {
         context.put(key, value);
@@ -34,10 +40,11 @@ public class ScenarioContext {
 
     /**
      * Retrieve and removes value from context.
+     *
      * @param key required key
      * @return value
      */
-    public <T> T pop(String key, Class<T> type){
+    public <T> T pop(String key, Class<T> type) {
         T value = get(key, type);
         context.remove(key);
         return value;

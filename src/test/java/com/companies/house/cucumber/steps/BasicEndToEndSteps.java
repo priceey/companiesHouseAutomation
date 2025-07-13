@@ -26,7 +26,14 @@ public class BasicEndToEndSteps {
 
     @Given("I have launched the website under test")
     public void iHaveLaunchedTheWebsiteUnderTest() {
-        homepage.loadHomePage();
+        context.put("isAccessibilityTest", false);
+        homepage.loadHomePage(context.getScenario().getName());
+    }
+
+    @Given("I have launched the website under test and have enabled accessibility testing")
+    public void iHaveLaunchedTheWebsiteUnderTestAndHaveEnabledAccessibilityTesting() {
+        context.put("isAccessibilityTest", true);
+        homepage.loadHomePage(context.getScenario().getName());
     }
 
     @And("^I set the check in date to today$")
@@ -41,20 +48,22 @@ public class BasicEndToEndSteps {
         LocalDate checkinDate = context.get("checkInDate", LocalDate.class);
         LocalDate checkOutDate = checkinDate.plusDays(nights);
         context.put("checkOutDate", checkOutDate);
+        context.put("nights", nights);
         homepage.setCheckOutDate(Formatters.DD_MM_YYYY.format(checkOutDate));
     }
 
     @And("I set a random check in date")
     public void setRandomCheckInDate() {
-        int days = ThreadLocalRandom.current().nextInt(1, 365);
+        int days = ThreadLocalRandom.current().nextInt(5, 365);
         LocalDate checkInDate = LocalDate.now().plusDays(days);
         context.put("checkInDate", checkInDate);
         homepage.setCheckInDate(Formatters.DD_MM_YYYY.format(checkInDate));
     }
 
-    @When("^I click the check availability button and select the (.*) room option$")
-    public void iClickCheckAvailabilityAndSelectRoomType(String roomType) {
+    @When("^I click the check availability button and select the correct room option$")
+    public void iClickCheckAvailabilityAndSelectRoomType() {
         homepage.clickCheckAvailability();
+        String roomType = context.get("roomType", String.class);
         homepage.selectRoomType(roomType);
         context.put("roomType", roomType);
     }
@@ -62,7 +71,7 @@ public class BasicEndToEndSteps {
     @And("I can reserve my room and populate the additional details")
     public void iCanReserveMyRoomAndPopulateAdditionalDetails() {
         String roomType = context.get("roomType", String.class);
-        roomPage.correctPageIsDisplayed(roomType);
+        roomPage.correctPageIsDisplayed(roomType, context.getScenario().getName());
         roomPage.clickReserveNow();
         roomPage.populateAdditionalDetails();
         roomPage.clickSecondReserveNowButton();
@@ -71,5 +80,10 @@ public class BasicEndToEndSteps {
     @And("the confirmation details are displayed")
     public void theConfirmationDetailsAreDisplayed() {
         roomPage.confirmationDisplayed();
+    }
+
+    @And("^I want to book a (.*) room$")
+    public void iWantToBookASingleRoom(String roomType) {
+        context.put("roomType", roomType);
     }
 }

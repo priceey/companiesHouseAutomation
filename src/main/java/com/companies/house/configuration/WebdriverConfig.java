@@ -12,7 +12,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-
 @LazyConfiguration
 public class WebdriverConfig {
 

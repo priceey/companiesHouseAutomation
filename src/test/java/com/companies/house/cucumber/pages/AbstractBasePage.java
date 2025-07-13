@@ -1,6 +1,8 @@
 package com.companies.house.cucumber.pages;
 
 import com.companies.house.context.ScenarioContext;
+import com.deque.html.axecore.results.Results;
+import com.deque.html.axecore.selenium.AxeBuilder;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -10,11 +12,12 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 @Slf4j
 public class AbstractBasePage {
@@ -87,7 +90,6 @@ public class AbstractBasePage {
                 return true;
             } catch (Exception e) {
                 log.debug("Attempt {} of waiting for requested element", attempts);
-                System.out.println("Attempt of waiting for requested element: " + attempts);
             }
             attempts++;
         }
@@ -109,7 +111,10 @@ public class AbstractBasePage {
     }
 
     private void scrollAndWait(WebElement element) {
-        new Actions(driver).moveToElement(element).perform();
+        // new Actions(driver).moveToElement(element).perform();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});",
+                element
+        );
     }
 
     protected <T> void writeText(T elementAttr, CharSequence text) {
@@ -147,5 +152,30 @@ public class AbstractBasePage {
         }
 
         Assertions.assertTrue(counter < CLEAR_WEB_FIELD_MAX_VALUE, "Failed to clear field before reaching max value");
+    }
+
+    protected <T> void clearAndWriteText(T elementAttr, CharSequence text) {
+        clearElement(elementAttr);
+        writeText(elementAttr, text);
+    }
+
+    protected void waitForNumberOfElementsToBe(By by, int expectedNumberOfElements) {
+        wait.until(ExpectedConditions.numberOfElementsToBe(by, expectedNumberOfElements));
+    }
+
+    protected List<WebElement> findElements(By by) {
+        return driver.findElements(by);
+    }
+
+    protected void waitForVisibilityOfElements(By by){
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(by));
+    }
+
+    protected void waitForTextToBe(By by, String text){
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(by, text));
+    }
+
+    protected Results analyzeAccessibility(AxeBuilder axeBuilder) {
+        return axeBuilder.analyze(driver);
     }
 }

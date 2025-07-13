@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.companies.house</groupId>
     <artifactId>automation</artifactId>
@@ -37,6 +37,8 @@
         <datafaker.version>2.4.3</datafaker.version>
         <java.dev.jna.version>5.14.0</java.dev.jna.version>
         <comms.io.version>2.19.0</comms.io.version>
+        <ax.core.version>4.10.1</ax.core.version>
+        <rest.assured.version>5.5.5</rest.assured.version>
     </properties>
 
     <dependencies>
@@ -150,6 +152,22 @@
             <artifactId>commons-io</artifactId>
             <version>${comms.io.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.deque.html.axe-core/selenium -->
+        <dependency>
+            <groupId>com.deque.html.axe-core</groupId>
+            <artifactId>selenium</artifactId>
+            <version>${ax.core.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest.assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -164,8 +182,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>23</source>
+                    <target>23</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
